@@ -1,9 +1,9 @@
 # TelegramBotDaraev
-Тема работы - телеграм-бот, парсящий новости с сайта https://eec.eaeunion.org/news/
+1. Тема работы - телеграм-бот, парсящий новости с сайта https://eec.eaeunion.org/news/
 
-Используемые библиотеки: requests, BeautifulSoup, aiogram
+2. Используемые библиотеки: requests, BeautifulSoup, aiogram
 
-Алгоритм работы:
+3. Алгоритм работы:
 - main.py:
 1. запрос данных с сайта через requests
 2. обработка полученных данных BeautifulSoup'ом
