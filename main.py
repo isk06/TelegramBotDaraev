@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 from datetime import datetime
 import time
 
-# создаем функцию и словарь заголовков, помещаем в него user agent. Сохраняем все в словарь
+# Create a function and a dictionary of headers, put the user agent in it. Save everything to a dictionary
 def get_first_news():
     headers = {
         "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.63 Safari/537.36"
@@ -15,38 +15,38 @@ def get_first_news():
 
     soup = BeautifulSoup(r.text, "lxml")
 
-# далее идет сбор новостей
+# Next comes news gathering
     articles_cards = soup.find_all("div", class_="news-pane-item")
 
-# забираем заголовок статьи, дату, краткое описание и ссылку
-    news_dict = {} # словарь для наших статей
+# We take the title of the article, date, short description and link
+    news_dict = {} # Dictionary for our articles
     for article in articles_cards:
         article_title = article.find("span", class_="news-pane-item__h").text.strip()
         article_desc = article.find("span", class_="news-pane-item__text").text.strip()
         article_url = f'https://eec.eaeunion.org{article.find("a").get("href")}'
         article_date_timestamp = article.find('span', class_='news-pane-item__date').get_text(strip=True)
 
-        # получим id каждой новости. Сделаем это на основе уникального значения каждого url. Потом используем id в качестве ключа в словаре
+        # Get the id of each news. Let's do this based on the unique value of each url. Then we use id as a key in the dictionary
         article_id = article_url.split("/")[-2]
         article_id = article_id
 
-        # проверка работы сбора информации:
+        # Checking the work of information collecting:
         # print(f"{article_title} | {article_url} | {article_desc} | {article_date_timestamp}")
 
     #get_first_news()
 
-# ключи - id статей, а значения - словари с собранными данными
+# Keys - id articles, and values - dictionaries with collected data
         news_dict[article_id] = {
             "article_date_timestamp": article_date_timestamp,
             "article_title": article_title,
             "article_url": article_url,
             "article_desc": article_desc
         }
-# сохраняем результат работы в json-файл
+# Save the result of the work in a json file
     with open("news_dict.json", "w") as file:
         json.dump(news_dict, file, indent=4, ensure_ascii=False)
 
-# функция проверки поступления новых статей
+# function that checks new articles
 def check_news_update():
     with open("news_dict.json") as file:
         news_dict = json.load(file)
@@ -67,7 +67,7 @@ def check_news_update():
         article_id = article_url.split("/")[-1]
         article_id = article_id
         
-        # если id есть в подгружаемом словаре, то continue. Если совпадений не найдено, то надо собрать данные на новость как прежде
+        # If id is in the loaded dictionary, then continue. If no matches are found, then you need to collect data on the news as before
         if article_id in news_dict:
             continue
         else:
@@ -94,7 +94,7 @@ def check_news_update():
 
     return fresh_news
 
-# создаем функцию по сбору статей
+# Create a function for collecting articles
 def main():
     get_first_news()
     #print(check_news_update())
