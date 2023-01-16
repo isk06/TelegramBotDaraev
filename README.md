@@ -13,3 +13,5 @@
 
 - tg_bot_MY.py:
 5. transfer information to the telegram bot. Menu buttons have been created
+
+June 10, 2022
